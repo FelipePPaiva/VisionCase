@@ -1,0 +1,88 @@
+@import url('../global.css');
+
+.conteiner{
+    max-width: 50%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.content{
+    max-width: 400px;
+    border: 1px solid gray;
+    box-shadow: 2px 3px 6px;
+    margin: 50% auto;
+    border-radius: 8px;
+}
+
+.header{
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 1.25rem;
+}
+
+.contentForm{
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.contentForm input{
+    padding: 0.75rem 0;
+    margin-bottom: 2rem;
+    border: none;
+    border-bottom: 1px solid gray;
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+}
+
+.contentForm input:focus{
+    outline: none;
+}
+
+.contentForm input::placeholder{
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+}
+
+.contentForm input:focus{
+    color: var(--text-secondary);
+}
+
+.contentForm > div{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+}
+
+.option span{
+    padding-left: 0.5rem;
+}
+
+.contentForm a{
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.contentForm a:hover{
+    color: var(--text-secondary);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.contentForm button{
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem;
+    font-size: 2rem;
+}
+
+.contentForm button:hover{
+    background-color: #131d8b;
+    color: var(--text-primary);
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem;
+    font-size: 2rem;
+}
