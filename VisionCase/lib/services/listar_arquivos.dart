@@ -175,29 +175,31 @@ class _FileListWidgetState extends State<FileListWidget> {
   }
 
   // Função para determinar a imagem com base na extensão do arquivo
-  Widget _getImageForFile(String extension) {
-    final icons = {
-      'pdf': 'assets/images/pdf.png',
-      'doc': 'assets/images/docx.png',
-      'docx': 'assets/images/docx.png',
-      'xls': 'assets/images/xls.png',
-      'xlsx': 'assets/images/xls.png',
-      'csv': 'assets/images/csv.png',
-      'ppt': 'assets/images/ppt.png',
-      'pptx': 'assets/images/ppt.png',
-      'jpg': 'assets/images/jpg.png',
-      'jpeg': 'assets/images/jpg.png',
-      'png': 'assets/images/png.png',
-      'mp4': 'assets/images/video.png',
-      'avi': 'assets/images/video.png',
-    };
+ Widget _getImageForFile(String extension) {
+  final bool eTablet = MediaQuery.of(context).size.width >= 768;
+  final icons = {
+    'pdf': 'assets/images/pdf${eTablet ? "-32" : ""}.png',
+    'doc': 'assets/images/docx${eTablet ? "-32" : ""}.png',
+    'docx': 'assets/images/docx${eTablet ? "-32" : ""}.png',
+    'xls': 'assets/images/xls${eTablet ? "-32" : ""}.png',
+    'xlsx': 'assets/images/xls${eTablet ? "-32" : ""}.png',
+    'csv': 'assets/images/csv${eTablet ? "-32" : ""}.png',
+    'ppt': 'assets/images/ppt${eTablet ? "-32" : ""}.png',
+    'pptx': 'assets/images/ppt${eTablet ? "-32" : ""}.png',
+    'jpg': 'assets/images/jpg${eTablet ? "-32" : ""}.png',
+    'jpeg': 'assets/images/jpg${eTablet ? "-32" : ""}.png',
+    'png': 'assets/images/png${eTablet ? "-32" : ""}.png',
+    'mp4': 'assets/images/video${eTablet ? "-32" : ""}.png',
+    'avi': 'assets/images/video${eTablet ? "-32" : ""}.png',
+  };
 
-    return Image.asset(
-      icons[extension.toLowerCase()] ?? 'assets/images/file.png',
-      width: 40,
-      height: 40,
-    );
-  }
+  return Image.asset(
+    icons[extension.toLowerCase()] ?? 'assets/images/file${eTablet ? "-32" : ""}.png',
+    width: eTablet ? 40 : 35,
+    height: eTablet ? 40 : 35,
+    fit: BoxFit.contain,
+  );
+}
 
   // Função para exibir o menu com opções ao clicar no ícone "..."
   void _showOptionsMenu(BuildContext context, dynamic arquivo, int index) {
@@ -490,6 +492,8 @@ class _FileListWidgetState extends State<FileListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
+
     if (_disposed) return Container();
     return ListView.separated(
       itemCount: widget.arquivos.length,
@@ -529,7 +533,7 @@ class _FileListWidgetState extends State<FileListWidget> {
           title: Text(
             originalName,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: eTablet ? 20 : 14,
               fontFamily: 'Frutiger',
               fontWeight: FontWeight.w400,
             ),
@@ -539,7 +543,7 @@ class _FileListWidgetState extends State<FileListWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Criado em: $criadoEm',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, fontFamily: 'Frutiger',)),
+                  style: TextStyle(fontSize: eTablet ? 16 : 12, fontWeight: FontWeight.w400, fontFamily: 'Frutiger',)),
               if (isConfidencial)
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
@@ -556,7 +560,7 @@ class _FileListWidgetState extends State<FileListWidget> {
                           Icon(
                             Icons.lock_outline,
                             color: Colors.black,
-                            size: 10,
+                            size: eTablet ? 12 : 10,
                           ),
                           SizedBox(width: 2),
                           Text(
@@ -564,7 +568,7 @@ class _FileListWidgetState extends State<FileListWidget> {
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Frutiger',
-                              fontSize: 10,
+                              fontSize: eTablet ? 12 : 10,
                             ),
                           ),
                         ],

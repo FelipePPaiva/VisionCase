@@ -128,13 +128,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-          child: SingleChildScrollView(
+Widget build(BuildContext context) {
+  // Detecta se é tablet
+  final bool eTablet = MediaQuery.of(context).size.width >= 768;
+
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: SafeArea(
+      child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+          // Padding condicional baseado no dispositivo
+          padding: eTablet
+              ? const EdgeInsets.fromLTRB(160, 242, 160, 284)  // iPad
+              : const EdgeInsets.fromLTRB(32, 16, 32, 16),     // Mobile
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -145,30 +151,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_back_ios_new,
                           color: Color.fromRGBO(0, 114, 239, 1),
-                          size: 16,
+                          size: eTablet ? 20 : 16,
                         ),
                         hoverColor: Colors.transparent,
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
+                            MaterialPageRoute(builder: (context) => LoginPage()),
                           );
                         },
                       ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      const Text(
+                      SizedBox(width: 8),
+                      Text(
                         "Esqueci a senha",
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Frutiger',
-                            color: Color.fromRGBO(50, 55, 62, 1)),
+                          fontSize: eTablet ? 24 :20,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Frutiger',
+                          color: Color.fromRGBO(50, 55, 62, 1),
+                        ),
                       ),
                     ],
                   ),
@@ -183,22 +187,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           const Text(
                             "Informe seu e-mail:",
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Frutiger',
-                                height: 1.5,
-                                color: Color.fromRGBO(50, 55, 62, 1)),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Frutiger',
+                              height: 1.5,
+                              color: Color.fromRGBO(50, 55, 62, 1),
+                            ),
                           ),
                           const SizedBox(height: 59),
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Frutiger',
-                                height: 1.5,
-                                color: Color.fromRGBO(50, 55, 62, 1)),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Frutiger',
+                              height: 1.5,
+                              color: Color.fromRGBO(50, 55, 62, 1),
+                            ),
                             decoration: InputDecoration(
                               hoverColor: Colors.transparent,
                               label: const Text("E-mail"),
@@ -208,8 +214,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   : const Color(0xFFFFE5E5),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color:
-                                      _emailValido ? Colors.blue : Colors.red,
+                                  color: _emailValido ? Colors.blue : Colors.red,
                                   width: 2.0,
                                 ),
                               ),
@@ -222,16 +227,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             ),
                             validator: _validarEmail,
                           ),
-                          if (_mensagemErro !=
-                              null) // Condicional para exibir apenas uma mensagem de erro
+                          if (_mensagemErro != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 0),
                               child: Text(
                                 _mensagemErro!,
                                 style: const TextStyle(
-                                    color: Color.fromRGBO(231, 30, 30, 1),
-                                    fontSize: 12,
-                                    fontFamily: 'Frutiger'),
+                                  color: Color.fromRGBO(231, 30, 30, 1),
+                                  fontSize: 12,
+                                  fontFamily: 'Frutiger',
+                                ),
                               ),
                             ),
                         ],
@@ -249,8 +254,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             }
                           : null,
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
                           (states) {
                             if (states.contains(MaterialState.disabled)) {
                               return const Color.fromRGBO(0, 114, 239, 0.4);
@@ -258,21 +262,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             return const Color.fromRGBO(0, 114, 239, 1);
                           },
                         ),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                         padding: MaterialStateProperty.all<EdgeInsets>(
                           const EdgeInsets.fromLTRB(34, 14, 34, 14),
                         ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(3),
                           ),
                         ),
                       ),
                       child: _isLoading
-                          ? SizedBox(
-                              width: 24, height: 24, child: LoadingScreen())
+                          ? SizedBox(width: 24, height: 24, child: LoadingScreen())
                           : FittedBox(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -281,10 +282,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     child: Text(
                                       "Enviar código de recuperação",
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'Frutiger'),
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Frutiger',
+                                      ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -304,7 +306,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ],
           ),
         ),
-      )),
-    );
-  }
+      ),
+    ),
+  );
+}
 }

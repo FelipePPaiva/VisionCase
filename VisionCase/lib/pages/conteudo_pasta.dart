@@ -150,7 +150,7 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
   Widget build(BuildContext context) {
     // Inicializa o formatador de datas
     final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -161,7 +161,7 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios,
               color: Color.fromRGBO(0, 114, 239, 1),
-              size: 16,
+              size: eTablet ? 20 :16,
             ),
             hoverColor: Colors.transparent, // Remove o fundo cinza ao passar o mouse
             onPressed: () {
@@ -177,7 +177,7 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
                 // Adiciona Expanded aqui
                 child: Text(
                   _folderContent['folderName'] ?? 'Conteúdo da Pasta',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, fontFamily: 'Frutiger',),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: eTablet ? 24 : 20, fontFamily: 'Frutiger',),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1, // Limita a uma linha
                 ),
@@ -198,7 +198,7 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
                   mainAxisSize: MainAxisSize.min, // Ajusta o Column para ter o mínimo de altura necessário
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 24),
+                    SizedBox(height: 28),
                     //Verificação se há conteudo, caso não centraliza a mensagem
                     if ((_folderContent['subfolders'] == null ||
                             _folderContent['subfolders'].isEmpty) &&
@@ -235,17 +235,17 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
                                 hoverColor: Colors.transparent,
                                 leading: Icon(Icons.folder,
                                   color: Colors.amber,
-                                  size: 38,
+                                  size: eTablet ? 50 : 38,
                                 ),
                                 title: Text(subfolder['nome'],
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: eTablet ? 20 : 14,
                                   fontFamily: 'Frutiger',
                                   fontWeight: FontWeight.w400,
                                 )),
                                 subtitle: Text('Criado em: $dataFormatada',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: eTablet ? 16 : 12,
                                   fontFamily: 'Frutiger',
                                   fontWeight: FontWeight.w400,
                                 )
@@ -349,6 +349,7 @@ class _SubfolderContentPageState extends State<SubfolderContentPage> {
           }
         },
       ),
+      
     );
   }
 }

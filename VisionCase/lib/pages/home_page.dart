@@ -249,32 +249,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getImageForFile(String extension) {
-    final icons = {
-      'pdf': 'assets/images/pdf.png',
-      'doc': 'assets/images/docx.png',
-      'docx': 'assets/images/docx.png',
-      'xls': 'assets/images/xls.png',
-      'xlsx': 'assets/images/xls.png',
-      'csv': 'assets/images/csv.png',
-      'ppt': 'assets/images/ppt.png',
-      'pptx': 'assets/images/ppt.png',
-      'jpg': 'assets/images/jpg.png',
-      'jpeg': 'assets/images/jpg.png',
-      'png': 'assets/images/png.png',
-      'mp4': 'assets/images/video.png',
-      'avi': 'assets/images/video.png',
-    };
+  final bool eTablet = MediaQuery.of(context).size.width >= 768;
+  final icons = {
+    'pdf': 'assets/images/pdf${eTablet ? "-32" : ""}.png',
+    'doc': 'assets/images/docx${eTablet ? "-32" : ""}.png',
+    'docx': 'assets/images/docx${eTablet ? "-32" : ""}.png',
+    'xls': 'assets/images/xls${eTablet ? "-32" : ""}.png',
+    'xlsx': 'assets/images/xls${eTablet ? "-32" : ""}.png',
+    'csv': 'assets/images/csv${eTablet ? "-32" : ""}.png',
+    'ppt': 'assets/images/ppt${eTablet ? "-32" : ""}.png',
+    'pptx': 'assets/images/ppt${eTablet ? "-32" : ""}.png',
+    'jpg': 'assets/images/jpg${eTablet ? "-32" : ""}.png',
+    'jpeg': 'assets/images/jpg${eTablet ? "-32" : ""}.png',
+    'png': 'assets/images/png${eTablet ? "-32" : ""}.png',
+    'mp4': 'assets/images/video${eTablet ? "-32" : ""}.png',
+    'avi': 'assets/images/video${eTablet ? "-32" : ""}.png',
+  };
 
-    return Image.asset(
-      icons[extension.toLowerCase()] ?? 'assets/images/file.png',
-      width: 40,
-      height: 40,
-      errorBuilder: (context, error, stackTrace) {
-        // Fallback para um ícone padrão caso a imagem não seja encontrada
-        return Icon(Icons.insert_drive_file);
-      },
-    );
-  }
+  return Image.asset(
+    icons[extension.toLowerCase()] ?? 'assets/images/file${eTablet ? "-32" : ""}.png',
+    width: eTablet ? 40 : 35,
+    height: eTablet ? 40 : 35,
+    fit: BoxFit.contain,
+  );
+}
 
   Widget _buildPastasList() {
     return _isLoading
@@ -306,6 +304,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildPastaItem(BuildContext context, int index) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     final pasta = _pastas[index];
     final String? dataCriacao = pasta['criado_em'];
     final String dataFormatada = dataCriacao != null
@@ -313,20 +312,20 @@ class _HomePageState extends State<HomePage> {
         : 'Data desconhecida';
 
     return ListTile(
-      leading: Icon(Icons.folder, color: Colors.amber, size: 38),
+      leading: Icon(Icons.folder, color: Colors.amber, size: eTablet ? 50 :38),
       hoverColor: Colors.transparent,
       title: Text(
         pasta['nome'] ?? 'Sem nome',
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 14,
+          fontSize: eTablet ? 20 : 14,
           fontFamily: 'Frutiger',
         ),
       ),
       subtitle: Text(
         'Criado em: $dataFormatada',
         style: TextStyle(
-          fontSize: 12,
+          fontSize: eTablet ? 16 : 12,
           fontFamily: 'Frutiger',
         ),
       ),
@@ -354,14 +353,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildFavoriteSubfolderItem(Map<String, dynamic> subfolder) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 2.0),
       child: ListTile(
-        leading: Icon(Icons.folder, color: Colors.amber, size: 38),
+        leading: Icon(Icons.folder, color: Colors.amber, size: eTablet ? 50 :38),
         title: Row(
           children: [
             Expanded(
-              child: Text(subfolder['name'] ?? 'Sem nome'),
+              child: Text(subfolder['name'] ?? 'Sem nome',
+              style: TextStyle(
+                fontFamily: 'Frutiger',
+                fontSize: eTablet ? 20 : 14,
+              ),),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 14.0),
@@ -416,6 +420,7 @@ class _HomePageState extends State<HomePage> {
 
 //Funçao para mostrar o cabeçalho em todos os menus de navegação
   Widget _buildHeader(String titulo) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Padding(
       padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
       child: Column(
@@ -434,7 +439,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     'VisionCase',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: eTablet ? 20 : 18,
                       fontFamily: 'Frutiger',
                       fontWeight: FontWeight.bold,
                     ),
@@ -465,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 fontFamily: 'Frutiger',
                                 fontWeight: FontWeight.w400,
-                                fontSize: 16,
+                                fontSize: eTablet ? 18 : 16,
                               ),
                             ),
                           ),
@@ -672,6 +677,7 @@ class _HomePageState extends State<HomePage> {
 
   //Lista de páginas associadas ao itens do menu inferior
   Widget _buildContent() {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     switch (_selecionaIndex) {
       case 0:
         return OrientationBuilder(
@@ -693,7 +699,7 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           "Início",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: eTablet ? 26 : 20,
                             fontFamily: 'Frutiger',
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
@@ -743,14 +749,34 @@ class _HomePageState extends State<HomePage> {
                                   width: 1,
                                   color: Colors.grey,
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.search,
-                                    color: Color.fromRGBO(0, 114, 239, 1),
-                                    size: 20,
-                                  ),
-                                  onPressed: () {},
-                                )
+                                // Condição para mostrar ícone ou texto baseado no dispositivo
+                                eTablet
+                                    ? TextButton(
+                                        onPressed: () {},
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          minimumSize: Size.zero,
+                                        ),
+                                        child: Text(
+                                          "Pesquisa",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(0, 114, 239, 1),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Frutiger',
+                                          ),
+                                        ),
+                                      )
+                                    : IconButton(
+                                        icon: Icon(
+                                          Icons.search,
+                                          color: Color.fromRGBO(0, 114, 239, 1),
+                                          size: 20,
+                                        ),
+                                        onPressed: () {},
+                                      )
                               ],
                             ),
                           ),
@@ -789,7 +815,7 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   "Início",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: eTablet ? 26 : 20,
                                     fontFamily: 'Frutiger',
                                     fontWeight: FontWeight.w700,
                                     color: Colors.black,
@@ -831,15 +857,35 @@ class _HomePageState extends State<HomePage> {
                                           width: 1,
                                           color: Colors.grey,
                                         ),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.search,
-                                            color:
-                                                Color.fromRGBO(0, 114, 239, 1),
-                                            size: 16,
-                                          ),
-                                          onPressed: () {},
-                                        )
+                                        // Condição para mostrar ícone ou texto baseado no dispositivo
+                                        eTablet
+                                            ? TextButton(
+                                                onPressed: () {},
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                                  minimumSize: Size.zero,
+                                                ),
+                                                child: Text(
+                                                  "Pesquisa",
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 114, 239, 1),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: 'Frutiger',
+                                                  ),
+                                                ),
+                                              )
+                                            : IconButton(
+                                                icon: Icon(
+                                                  Icons.search,
+                                                  color: Color.fromRGBO(
+                                                      0, 114, 239, 1),
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {},
+                                              )
                                       ],
                                     ),
                                   ),
@@ -883,433 +929,314 @@ class _HomePageState extends State<HomePage> {
             }
           },
         );
-      case 1: // Arquivos offline
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader("Downloads"),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-              child: Text(
-                "Downloads",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Frutiger',
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Expanded(
-              child: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setStateBuilder) {
-                  return FutureBuilder<List<FileSystemEntity>>(
-                    key: UniqueKey(),
-                    future: _listarArquivosOffline(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text("Erro ao carregar arquivos."));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(
-                            child: Text("Nenhum arquivo encontrado."));
-                      }
+case 1: // Arquivos offline
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _buildHeader("Downloads"),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+        child: Text(
+          "Downloads",
+          style: TextStyle(
+            fontSize: eTablet ? 24 : 20,
+            fontFamily: 'Frutiger',
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      Expanded(
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateBuilder) {
+            return FutureBuilder<List<FileSystemEntity>>(
+              key: UniqueKey(),
+              future: _listarArquivosOffline(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text("Erro ao carregar arquivos.",
+                      style: TextStyle(
+                        fontSize: eTablet ? 20 : 16
+                      ),));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                      child: Text("Nenhum arquivo encontrado.",
+                      style: TextStyle(
+                        fontSize: eTablet ? 20 : 16
+                      )));
+                }
 
-                      List<Map<String, dynamic>> arquivosFormatados =
-                          snapshot.data!.map((item) {
-                        final String nomeComZip = item.path.split('/').last;
-                        final String nomeSemZip =
-                            nomeComZip.replaceAll('.zip', '');
-                        final File file = File(item.path);
-                        final FileStat stat = file.statSync();
+                List<Map<String, dynamic>> arquivosFormatados =
+                    snapshot.data!.map((item) {
+                  final String nomeComZip = item.path.split('/').last;
+                  final String nomeSemZip =
+                      nomeComZip.replaceAll('.zip', '');
+                  final File file = File(item.path);
+                  final FileStat stat = file.statSync();
 
-                        return {
-                          'nome_exibicao':
-                              nomeSemZip, // Nome sem .zip para exibição
-                          'nome_completo':
-                              nomeComZip, // Nome com .zip para sistema
-                          'path': item.path,
-                          'criado_em': stat.modified.toIso8601String(),
-                          'size': stat.size,
-                        };
-                      }).toList();
+                  return {
+                    'nome_exibicao': nomeSemZip, // Nome sem .zip para exibição
+                    'nome_completo': nomeComZip, // Nome com .zip para sistema
+                    'path': item.path,
+                    'criado_em': stat.modified.toIso8601String(),
+                    'size': stat.size,
+                  };
+                }).toList();
 
-                      return ListView.separated(
-                        itemCount: arquivosFormatados.length,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => Divider(
-                          color: Colors.grey.shade300,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 40,
-                          height: 1,
+                return ListView.separated(
+                  itemCount: arquivosFormatados.length,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 40,
+                    height: 1,
+                  ),
+                  itemBuilder: (context, index) {
+                    final arquivo = arquivosFormatados[index];
+                    final extension = arquivo['nome_exibicao']
+                        .split('.')
+                        .last
+                        .toLowerCase();
+
+                    return ListTile(
+                      hoverColor: Colors.transparent,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      leading: _getImageForFile(extension),
+                      title: Text(
+                        arquivo['nome_exibicao'],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: eTablet ? 20 : 14,
+                          fontFamily: 'Frutiger',
                         ),
-                        itemBuilder: (context, index) {
-                          final arquivo = arquivosFormatados[index];
-                          final extension = arquivo['nome_exibicao']
-                              .split('.')
-                              .last
-                              .toLowerCase();
-
-                          return Dismissible(
-                            key: Key(arquivo['path']),
-                            direction: DismissDirection.endToStart,
-                            background: Container(
-                              color: Color.fromRGBO(0, 114, 239, 1),
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.delete, color: Colors.white),
-                            ),
-                            confirmDismiss: (direction) async {
-                              return await showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: Text("Confirmar exclusão"),
-                                  content: Text(
-                                      "Tem certeza que deseja excluir este arquivo?"),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: Text("Cancelar"),
+                      ),
+                      subtitle: Text(
+                          'Criado em: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(arquivo['criado_em']))}',
+                          style: TextStyle(
+                            fontSize: eTablet ? 16 : 12,
+                            fontFamily: 'Frutiger',
+                          )),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Color.fromRGBO(0, 114, 239, 1),
+                          size: eTablet ?22 : 20,
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            isDismissible: true,
+                            barrierColor: Colors.black26,
+                            builder: (BuildContext context) {
+                              return Stack(
+                                children: [
+                                  BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      color: Colors.black.withOpacity(0.3),
+                                      height: double.infinity,
+                                      width: double.infinity,
                                     ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: Text("Excluir"),
-                                      style: TextButton.styleFrom(
-                                          foregroundColor: Colors.red),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            onDismissed: (direction) async {
-                              try {
-                                final file = File(arquivo['path']);
-                                await file.delete();
-
-                                if (mounted) {
-                                  setStateBuilder(() {
-                                    arquivosFormatados.removeAt(index);
-                                  });
-                                }
-
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text('Arquivo excluído com sucesso'),
-                                      backgroundColor:
-                                          Color.fromRGBO(0, 114, 239, 1),
-                                    ),
-                                  );
-                                }
-                              } catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text('Erro ao excluir arquivo: $e'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            child: ListTile(
-                              hoverColor: Colors.transparent,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              leading: _getImageForFile(extension),
-                              title: Text(
-                                arquivo['nome_exibicao'],
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Frutiger',
-                                ),
-                              ),
-                              subtitle: Text(
-                                  'Criado em: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(arquivo['criado_em']))}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'Frutiger',
-                                  )),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color: Color.fromRGBO(0, 114, 239, 1),
-                                  size: 20,
-                                ),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    isDismissible: true,
-                                    barrierColor: Colors.black26,
-                                    builder: (BuildContext context) {
-                                      return Stack(
-                                        children: [
-                                          BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 10, sigmaY: 10),
-                                            child: Container(
-                                              color:
-                                                  Colors.black.withOpacity(0.3),
-                                              height: double.infinity,
-                                              width: double.infinity,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Material(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.zero,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          // Cabeçalho do modal
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 16.0,
+                                                horizontal: 16.0),
+                                            child: Row(
+                                              children: [
+                                                _getImageForFile(extension),
+                                                SizedBox(width: 16),
+                                                Expanded(
+                                                  child: Text(
+                                                    arquivo['nome_exibicao'],
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Frutiger',
+                                                      fontSize: 14,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Material(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.zero,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  // Cabeçalho do modal
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 16.0),
-                                                    child: Row(
-                                                      children: [
-                                                        _getImageForFile(
-                                                            extension),
-                                                        SizedBox(width: 16),
-                                                        Expanded(
-                                                          child: Text(
-                                                            arquivo[
-                                                                'nome_exibicao'],
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontFamily:
-                                                                  'Frutiger',
-                                                              fontSize: 14,
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Divider(
-                                                    color: Colors.grey.shade300,
-                                                    thickness: 1,
-                                                  ),
-                                                  // Opção de Detalhes
-                                                  ListTile(
-                                                    leading: Icon(
-                                                        Icons.info_outline,
-                                                        size: 15),
-                                                    title: Text(
-                                                      'Detalhes',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontFamily: 'Frutiger',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                      // Navegação para a página de detalhes
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              FileDetailsPage(
-                                                            fileId: arquivo[
-                                                                'path'], // Passa o caminho do arquivo
-                                                            isOffline:
-                                                                true, // Marca como arquivo offline
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  // Opção de Excluir
-                                                  ListTile(
-                                                    leading: Icon(
-                                                        Icons.delete_outline,
-                                                        size: 15),
-                                                    title: Text(
-                                                      'Excluir',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontFamily: 'Frutiger',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    onTap: () async {
-                                                      Navigator.pop(
-                                                          context); // Fecha o modal
-
-                                                      final confirm =
-                                                          await showDialog<
-                                                              bool>(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            AlertDialog(
-                                                          title: Text(
-                                                              "Confirmar exclusão"),
-                                                          content: Text(
-                                                              "Tem certeza que deseja excluir este arquivo?"),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      false),
-                                                              child: Text(
-                                                                  "Cancelar"),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      true),
-                                                              child: Text(
-                                                                  "Excluir"),
-                                                              style: TextButton
-                                                                  .styleFrom(
-                                                                      foregroundColor:
-                                                                          Colors
-                                                                              .red),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-
-                                                      if (confirm == true) {
-                                                        try {
-                                                          final file = File(
-                                                              arquivo['path']);
-                                                          await file.delete();
-
-                                                          if (context.mounted) {
-                                                            // Atualiza a lista
-                                                            setStateBuilder(() {
-                                                              arquivosFormatados
-                                                                  .removeAt(
-                                                                      index);
-                                                            });
-
-                                                            // Força a reconstrução do FutureBuilder
-
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    'Arquivo excluído com sucesso'),
-                                                                backgroundColor:
-                                                                    Color
-                                                                        .fromRGBO(
-                                                                            0,
-                                                                            114,
-                                                                            239,
-                                                                            1),
-                                                              ),
-                                                            );
-                                                          }
-                                                        } catch (e) {
-                                                          if (context.mounted) {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    'Erro ao excluir arquivo: $e'),
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                              ),
-                                                            );
-                                                          }
-                                                        }
-                                                      }
-                                                      setState(() {
-                                                        _listarArquivosOffline();
-                                                      });
-                                                    },
-                                                  ),
-                                                ],
+                                          Divider(
+                                            color: Colors.grey.shade300,
+                                            thickness: 1,
+                                          ),
+                                          // Opção de Detalhes
+                                          ListTile(
+                                            leading: Icon(Icons.info_outline, size: 15),
+                                            title: Text(
+                                              'Detalhes',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Frutiger',
+                                                fontWeight: FontWeight.w400,
                                               ),
                                             ),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              // Navegação para a página de detalhes
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => FileDetailsPage(
+                                                    fileId: arquivo['path'], // Passa o caminho do arquivo
+                                                    isOffline: true, // Marca como arquivo offline
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          // Opção de Excluir
+                                          ListTile(
+                                            leading: Icon(Icons.delete_outline, size: 15),
+                                            title: Text(
+                                              'Excluir',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Frutiger',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            onTap: () async {
+                                              Navigator.pop(context); // Fecha o modal
+
+                                              final confirm = await showDialog<bool>(
+                                                context: context,
+                                                builder: (BuildContext context) => AlertDialog(
+                                                  shape: Border(),
+                                                  title: Text("Confirmar exclusão",
+                                                    style: TextStyle(
+                                                      fontSize: eTablet ? 20 : 16,
+                                                      fontFamily: 'Frutiger',
+                                                    )),
+                                                  content: Text("Tem certeza que deseja excluir este arquivo?"),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () => Navigator.pop(context, false),
+                                                      child: Text("Cancelar"),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () => Navigator.pop(context, true),
+                                                      child: Text("Excluir"),
+                                                      style: TextButton.styleFrom(
+                                                        foregroundColor: Colors.red
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+
+                                              if (confirm == true) {
+                                                try {
+                                                  final file = File(arquivo['path']);
+                                                  await file.delete();
+
+                                                  if (context.mounted) {
+                                                    // Atualiza a lista
+                                                    setStateBuilder(() {
+                                                      arquivosFormatados.removeAt(index);
+                                                    });
+
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        content: Text('Arquivo excluído com sucesso'),
+                                                        backgroundColor: Color.fromRGBO(0, 114, 239, 1),
+                                                      ),
+                                                    );
+                                                  }
+                                                } catch (e) {
+                                                  if (context.mounted) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        content: Text('Erro ao excluir arquivo: $e'),
+                                                        backgroundColor: Colors.red,
+                                                      ),
+                                                    );
+                                                  }
+                                                }
+                                              }
+                                              setState(() {
+                                                _listarArquivosOffline();
+                                              });
+                                            },
                                           ),
                                         ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              onTap: () async {
-                                try {
-                                  final zipFile = File(arquivo['path']);
-                                  if (!await zipFile.exists()) {
-                                    throw Exception(
-                                        'Arquivo ZIP não encontrado');
-                                  }
-
-                                  final downloadService = DownloadService();
-
-                                  // Descompacta o arquivo
-                                  final decompressedFile = await downloadService
-                                      .decompressZip(zipFile);
-
-                                  // Abre o arquivo
-                                  final result = await OpenFile.open(
-                                      decompressedFile.path);
-
-                                  if (result.type != ResultType.done) {
-                                    throw Exception(
-                                        'Erro ao abrir arquivo: ${result.message}');
-                                  }
-
-                                  // Agenda a limpeza para 60 segundos depois
-                                  Future.delayed(Duration(seconds: 60),
-                                      () async {
-                                    await downloadService
-                                        .cleanupTempFile(decompressedFile);
-                                  });
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content:
-                                            Text('Erro ao abrir arquivo: $e'),
-                                        backgroundColor: Colors.red,
                                       ),
-                                    );
-                                  }
-                                }
-                              },
-                            ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+                      ),
+                      onTap: () async {
+                        try {
+                          final zipFile = File(arquivo['path']);
+                          if (!await zipFile.exists()) {
+                            throw Exception('Arquivo ZIP não encontrado');
+                          }
+
+                          final downloadService = DownloadService();
+
+                          // Descompacta o arquivo
+                          final decompressedFile = await downloadService.decompressZip(zipFile);
+
+                          // Abre o arquivo
+                          final result = await OpenFile.open(decompressedFile.path);
+
+                          if (result.type != ResultType.done) {
+                            throw Exception('Erro ao abrir arquivo: ${result.message}');
+                          }
+
+                          // Agenda a limpeza para 60 segundos depois
+                          Future.delayed(Duration(seconds: 60), () async {
+                            await downloadService.cleanupTempFile(decompressedFile);
+                          });
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Erro ao abrir arquivo: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ),
+    ],
+  );
       case 2: // Favoritos
         return OrientationBuilder(
           builder: (context, orientation) {
@@ -1325,7 +1252,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       "Favoritos",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: eTablet ? 24 : 20,
                         fontFamily: 'Frutiger',
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
@@ -1456,6 +1383,7 @@ class _HomePageState extends State<HomePage> {
 //NOVA TELA DE HOME PAGE
   @override
   Widget build(BuildContext context) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Scaffold(
       backgroundColor: Colors.white,
       body: _buildContent(),
@@ -1483,8 +1411,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Positioned(
-            bottom:
-                56, // Altura exata da linha em relação ao topo do BottomNavigationBar
+            bottom:eTablet ? 88 : 56, // Altura exata da linha em relação ao topo do BottomNavigationBar
             left: MediaQuery.of(context).size.width / 3 * _selecionaIndex + 25,
             child: Container(
               height: 2,

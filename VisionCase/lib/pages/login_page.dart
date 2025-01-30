@@ -418,8 +418,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: eTablet ? 180 : 32),
+                      SizedBox(height: eTablet ? 180 : 32),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Container(
@@ -819,7 +818,8 @@ class _LoginPageState extends State<LoginPage> {
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               0, 114, 239, 1),
-                                                          fontSize:  eTablet ? 14 : 12,
+                                                          fontSize:
+                                                              eTablet ? 14 : 12,
                                                           fontFamily:
                                                               'Frutiger',
                                                           fontWeight:

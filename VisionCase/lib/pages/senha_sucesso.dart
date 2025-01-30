@@ -5,11 +5,12 @@ class SenhaSucessoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+          padding: eTablet ? const EdgeInsets.fromLTRB(160, 231, 160, 231) : const EdgeInsets.fromLTRB(32, 16, 32, 16),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             //Row de Topo com Logo e nome
@@ -22,12 +23,12 @@ class SenhaSucessoPage extends StatelessWidget {
                 Image.asset(
                   'assets/images/sucesso.png',
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 // Título
-                const Text(
+                Text(
                   'Senha alterada com sucesso!',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: eTablet ? 24 : 22,
                     fontFamily: 'Frutiger',
                     fontWeight: FontWeight.w700,
                     color: Color.fromRGBO(50, 55, 62, 1),
@@ -36,10 +37,10 @@ class SenhaSucessoPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 // Subtítulo
-                const Text(
+                Text(
                   'Agora, você já pode usar a nova senha para fazer login.',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: eTablet ? 20 : 16,
                     fontFamily: 'Frutiger',
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(96, 106, 118, 1),

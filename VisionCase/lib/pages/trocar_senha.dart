@@ -272,6 +272,7 @@ class _RedefinirSenhaPageState extends State<RedefinirSenhaPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -282,7 +283,7 @@ class _RedefinirSenhaPageState extends State<RedefinirSenhaPage> {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(32, 40, 32, 16),
+                padding: eTablet ? const EdgeInsets.all(160) : const EdgeInsets.fromLTRB(32, 40, 32, 16),
                 child: CompositedTransformTarget(
                   link: _layerLink,
                   child: Column(
@@ -294,20 +295,20 @@ class _RedefinirSenhaPageState extends State<RedefinirSenhaPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back_ios_new,
                                 color: Color.fromRGBO(0, 114, 239, 1),
-                                size: 16,
+                                size: eTablet ? 20 :16,
                               ),
                               hoverColor: Colors.transparent,
                               onPressed: () {
                                 Navigator.pop(context);
                               },
                             ),
-                            const Text(
+                            Text(
                               "Definir nova senha",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: eTablet ? 24 : 20,
                                 fontFamily: 'Frutiger',
                                 color: Color.fromRGBO(50, 55, 62, 1),
                                 fontWeight: FontWeight.w700,
@@ -321,11 +322,11 @@ class _RedefinirSenhaPageState extends State<RedefinirSenhaPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 24),
+                            SizedBox(height: 24),
                             Text(
                               "Digite a nova senha que você deseja usar para sua conta.",
-                              style: const TextStyle(
-                                fontSize: 14,
+                              style: TextStyle(
+                                fontSize: eTablet ? 20 : 14,
                                 fontFamily: 'Frutiger',
                                 fontWeight: FontWeight.w400,
                                 color: Color.fromRGBO(50, 55, 62, 1),

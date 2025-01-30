@@ -199,6 +199,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool eTablet = MediaQuery.of(context).size.width >= 768;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -209,7 +211,10 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 40, 24, 16),
+                padding: eTablet
+                    ? const EdgeInsets.fromLTRB(
+                        190, 272, 160, 284) // Padding para iPad
+                    : const EdgeInsets.fromLTRB(24, 40, 24, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -222,31 +227,32 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                             IconButton(
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back_ios_new,
                                 color: Color.fromRGBO(0, 114, 239, 1),
-                                size: 16,
+                                size: eTablet ? 20 : 16,
                               ),
                               hoverColor: Colors
                                   .transparent, // Remove o fundo cinza ao passar o mouse
                               onPressed: () {
-                               Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
-);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordPage()),
+                                );
                               },
                             ),
                             SizedBox(
                               width: 8,
                             ),
-                            const Text(
+                            Text(
                               "Verifique seu e-mail",
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Frutiger',
-                                color: Color.fromRGBO(50, 55, 62, 1)
-                              ),
+                                  fontSize: eTablet ? 24 : 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Frutiger',
+                                  color: Color.fromRGBO(50, 55, 62, 1)),
                             ),
                           ]),
                     ),
@@ -259,18 +265,18 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                           const SizedBox(height: 24),
                           Text(
                             "Enviamos um código de verificação para ${widget.email.toLowerCase()}.",
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: TextStyle(
+                              fontSize: eTablet ? 20 : 14,
                               fontFamily: 'Frutiger',
                               fontWeight: FontWeight.w400,
                               color: Color.fromRGBO(50, 55, 62, 1),
                             ),
                           ),
                           const SizedBox(height: 24),
-                          const Text(
+                          Text(
                             "Insira o código para continuar",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: eTablet ? 20 : 14,
                               fontFamily: 'Frutiger',
                               fontWeight: FontWeight.w400,
                               color: Color.fromRGBO(50, 55, 62, 1),
@@ -280,47 +286,65 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: List.generate(
-                                  6,
-                                  (index) => Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                        child: _buildCodeField(index),
-                                      ),
-                                      if (index != 5)
-                                        const SizedBox(
-                                            width:
-                                                5), // Espaçamento de 8 pixels
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              if (_isInvalidCode) // Mostra o texto de erro se o código for inválido
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        'O código está incorreto',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'Frutiger',
-                                          color: Color.fromRGBO(231, 30, 30, 1),
-                                          fontWeight: FontWeight.w400,
+                              SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: List.generate(
+                                          6,
+                                          (index) => Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                width: eTablet
+                                                    ? 55
+                                                    : 45, // Largura fixa para cada campo
+                                                child: _buildCodeField(index),
+                                              ),
+                                              if (index != 5)
+                                                SizedBox(
+                                                    width: eTablet ? 15 : 8),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    )),
+                                    ),
+                                    if (_isInvalidCode)
+                                      Container(
+                                        width: (eTablet ? 50 : 40) * 6 +
+                                            (eTablet ? 20 : 13) *
+                                                5, // Calcula a largura total
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Text(
+                                          'O código está incorreto',
+                                          style: TextStyle(
+                                            fontSize: eTablet ? 14 : 12,
+                                            fontFamily: 'Frutiger',
+                                            color:
+                                                Color.fromRGBO(231, 30, 30, 1),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 24),
                           _remainingTime > 0
                               ? Text(
                                   "Aguarde $_remainingTime segundos para outro reenvio",
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  style: TextStyle(
+                                    fontSize: eTablet ? 16 : 14,
                                     fontFamily: 'Frutiger',
                                     fontWeight: FontWeight.w500,
                                     color: Color.fromRGBO(96, 106, 118, 1),
@@ -348,12 +372,13 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                                                   AlwaysStoppedAnimation<Color>(
                                                       Colors.blue),
                                             )
-                                          : const Text(
+                                          : Text(
                                               "Reenviar código",
                                               style: TextStyle(
-                                                color: Color.fromRGBO(0, 114, 239, 1),
+                                                color: Color.fromRGBO(
+                                                    0, 114, 239, 1),
                                                 fontFamily: 'Frutiger',
-                                                fontSize: 14,
+                                                fontSize: eTablet ? 16 : 14,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
